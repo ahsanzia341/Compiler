@@ -1,0 +1,6 @@
+c:\users\gamers\documents\visual studio 2015\Projects\Compiler\Compiler\bin\Debug\Compiler.exe.config
+C:\Users\Gamers\documents\visual studio 2015\Projects\Compiler\Compiler\bin\Debug\Compiler.exe
+C:\Users\Gamers\documents\visual studio 2015\Projects\Compiler\Compiler\bin\Debug\Compiler.pdb
+C:\Users\Gamers\documents\visual studio 2015\Projects\Compiler\Compiler\obj\Debug\Compiler.csprojResolveAssemblyReference.cache
+C:\Users\Gamers\documents\visual studio 2015\Projects\Compiler\Compiler\obj\Debug\Compiler.exe
+C:\Users\Gamers\documents\visual studio 2015\Projects\Compiler\Compiler\obj\Debug\Compiler.pdb
