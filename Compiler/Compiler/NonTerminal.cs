@@ -12,12 +12,12 @@ namespace Compiler
 
         public char Name { get; set; }
 
-        public string HasString { get; set; }
+        public List<string> Production { get; set; }
 
-        public NonTerminal(char c, string HasString)
+        public NonTerminal(char c, List<string> Production)
         {
+            this.Production = Production;
             Name = c;
-            this.HasString = HasString;
         }
     }
 }

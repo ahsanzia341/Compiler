@@ -8,49 +8,130 @@ namespace Compiler
 {
     class CFG
     {
-        public List<NonTerminal> NonTerminal { get; set; }
+        public List<NonTerminal> NonTerminals { get; set; }
 
+        public List<string> Stack = new List<string>();
         public CFG()
         {
-            NonTerminal = new List<Compiler.NonTerminal>();
+            NonTerminals = new List<Compiler.NonTerminal>();
         }
+        
         public bool CheckIfValidString(string Input)
         {
             bool Validity = true;
-            string NTerminal = NonTerminal.First().HasString;
+            List<string> NTerminal = NonTerminals.First().Production;
             int InputPointer = 0;
+            int NTerminalStringPointer = 0;
             int NTerminalPointer = 0;
+            int Index = 0;
+           
             while(InputPointer < Input.Length)
             {
-                if (NTerminal[NTerminalPointer] != Input[InputPointer])
+               
+                if (NTerminalStringPointer < NTerminal[NTerminalPointer].Length)
                 {
-                    if (NonTerminal.Exists(n => n.Name == NTerminal[NTerminalPointer]))
+                    if (NTerminal[NTerminalPointer][NTerminalStringPointer] != Input[InputPointer])
                     {
-                        NTerminal = NonTerminal.Find(n => n.Name == NTerminal[NTerminalPointer]).HasString;
-                        NTerminalPointer = 0;
+                        if (NonTerminals.Exists(n => n.Name == NTerminal[NTerminalPointer][NTerminalStringPointer]))
+                        {
+                            string Splitted = NTerminal[NTerminalPointer].Remove(0, NTerminalStringPointer + 1);
+                            try
+                            {
+                                Stack.Add(Splitted);
+                                Index++;
+                            }
+                            catch (Exception E)
+                            {
+
+                            }
+                            NTerminal = NonTerminals.Find(n => n.Name == NTerminal[NTerminalPointer][NTerminalStringPointer]).Production;
+                            NTerminalStringPointer = 0;
+                        }
+                        else if (NTerminalPointer < NTerminal.Count - 1)
+                        {
+                            NTerminalPointer++;
+                        }
+                        else if (NTerminal.Exists(x => x == "") && Index > 0)
+                        {
+                            Index--;
+                            NTerminal = new List<string>();
+                            NTerminal.Add(Stack[Index]);
+                            NTerminalStringPointer = 0;
+                            NTerminalPointer = 0;
+                            Stack.RemoveAt(Index);
+                        }
+                        else
+                        {
+                            Validity = false;
+                            return Validity;
+                        }
                     }
-                    else
+                    else if (NonTerminals.Exists(n => n.Name == Input[InputPointer]))
                     {
                         Validity = false;
                         return Validity;
                     }
+                    else
+                    {
+                        NTerminalStringPointer++;
+                        InputPointer++;
+                    }
                 }
-                else if(NonTerminal.Exists(n=>n.Name == Input[InputPointer]))
+                else
+                {
+                    if (Index > 0)
+                    {
+                        Index--;
+                        NTerminal = new List<string>();
+                        NTerminal.Add(Stack[Index]);
+                        NTerminalStringPointer = 0;
+                        NTerminalPointer = 0;
+                        Stack.RemoveAt(Index);
+                    }
+                    else
+                    {
+                        return Validity;
+                    }
+                    //some condtions
+                    //int StackPointer = 0;
+
+                    //int Index = Stack.FindIndex(n => n[0] == Input[InputPointer]);
+
+                    //try
+                    //{
+                    //    NTerminal = new List<string>();
+                    //    NTerminal.Add(Stack[Index]);
+                    //    while (Stack[Index].Length > StackPointer)
+                    //    {
+                    //        if (Stack[Index][StackPointer] != Input[InputPointer])
+                    //        {
+                    //            if (NonTerminals.Exists(n => n.Name != NTerminal[NTerminalPointer][NTerminalStringPointer]))
+                    //            {
+                    //                return false;
+                    //            }
+                    //        }
+                    //        StackPointer++;
+                    //        InputPointer++;
+                    //    }
+                    //    Stack.RemoveAt(Index);
+                    //}
+                    //catch
+                    //{
+                    //    NTerminalPointer++;
+                    //}
+                }
+                if(InputPointer==Input.Length && NTerminalStringPointer<NTerminal[NTerminalPointer].Length)
                 {
                     Validity = false;
                     return Validity;
                 }
-                else
-                {
-                    NTerminalPointer++;
-                    InputPointer++;
-                }
+              
             }
             return Validity;
         }
         public void AddNonTerminal(NonTerminal NTerminal)
         {
-            NonTerminal.Add(NTerminal);
+            NonTerminals.Add(NTerminal);
         }
     }
 }

@@ -11,12 +11,14 @@ namespace Compiler
         static void Main(string[] args)
         {
             CFG Cfg = new CFG();
-            NonTerminal n1 = new NonTerminal('S',"AbS");
-            NonTerminal n2 = new NonTerminal('A', "abS");
+            
+            NonTerminal n1 = new NonTerminal('S',new List<string>() {"AAbT","cdA" });
+            NonTerminal n3 = new NonTerminal('T', new List<string>() { "abT", "cab" });
+            NonTerminal n2 = new NonTerminal('A', new List<string>() { "rafi", "emad", "" });
             Cfg.AddNonTerminal(n1);
             Cfg.AddNonTerminal(n2);
-            Console.WriteLine(Cfg.CheckIfValidString("Aababab"));
-
+            Cfg.AddNonTerminal(n3);
+            Console.WriteLine(Cfg.CheckIfValidString(""));
         }
     }
 }
